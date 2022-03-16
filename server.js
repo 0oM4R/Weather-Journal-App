@@ -23,6 +23,8 @@ app.listen(3000,()=>{
     console.log('server start listing on port 3000')
 })
 
+
+// post route to store data in the serever
 app.post("/addData", (req, res)=>{
     projectData.date = req.body.date;
     projectData.temp = req.body.temp;
@@ -30,7 +32,7 @@ app.post("/addData", (req, res)=>{
     console.log(projectData)
     res.send(projectData);
 })
-
+// get route to get the stored data 
 app.get("/allData", (req, res)=>{
     res.send(projectData)
 })

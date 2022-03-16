@@ -8,14 +8,17 @@ let newDate = d.getMonth()+1+'.'+ d.getDate()+'.'+ d.getFullYear();
 
 btn.addEventListener('click',geneate);
 
+
 function geneate(e){
     e.preventDefault();
+    // get user input
     const zip =document.getElementById('zip').value;
     const content =document.getElementById('feelings').value;
     if(!zip){
+        //there is no zip code entered in
         alert('Please enter zip code');
     }else{
-        //get weather data
+    //get weather data
      const weather = getWeatherData(zip).then(
        (weather) => {
            // passing weather to the server with user content 
@@ -23,6 +26,7 @@ function geneate(e){
             {date: newDate, temp: weather.main.temp, content: content }) 
             .then(
                 (projectData)=>{
+                    //passing data to updateUI
                     updateUI(projectData);
                 }
             )
@@ -36,6 +40,7 @@ function geneate(e){
 const getWeatherData = async(zip)=> {
     let response = await fetch(url+zip+apikey);
     try {
+        //convert to json format
         const weatherData = await response.json();
         return weatherData
     } catch (error){
@@ -52,6 +57,7 @@ const postData= async (url="",data={})=>{
             'content-type': 'application/json'
         },
         body: JSON.stringify({
+            
             date : data.date,
             temp : data.temp,
             content: data.content,
@@ -66,12 +72,13 @@ const postData= async (url="",data={})=>{
 }
 
 const updateUI = async () => {
+    //get all data from the server
     const req =await fetch("http://localhost:3000/allData")
     try{
         const allData = await req.json()  ;
-        document.getElementById("date").innerHTML =allData.date;
-        document.getElementById("temp").innerHTML =allData.temp;
-        document.getElementById("content").innerHTML =allData.content;
+        document.getElementById("date").innerHTML ="today is: "+allData.date;
+        document.getElementById("temp").innerHTML ="temp: "+allData.temp;
+        document.getElementById("content").innerHTML ="you said: "+allData.content;
     }catch (error){
         console.log(error)
     }
